@@ -1,0 +1,23 @@
+{
+  "name": "shortlink/yii2-app",
+  "description": "Short link service with QR codes",
+  "type": "project",
+  "require": {
+    "php": ">=8.5",
+    "yiisoft/yii2": "~2.0.54",
+    "yiisoft/yii2-bootstrap4": "~2.0.10",
+    "endroid/qr-code": "^5.0",
+    "ext-gd": "*",
+    "ext-curl": "*"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.1.0",
+    "yiisoft/yii2-gii": "~2.2.0"
+  },
+  "config": {
+    "process-timeout": 1800,
+    "allow-plugins": {
+      "yiisoft/yii2-composer": true
+    }
+  }
+}

@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: shortlink_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - shortlink-network
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: shortlink_php
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - shortlink-network
+
+  mysql:
+    image: mariadb:10.6
+    container_name: shortlink_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: shortlink_db
+      MYSQL_USER: shortlink_user
+      MYSQL_PASSWORD: shortlink_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - shortlink-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: shortlink_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - shortlink-network
+
+volumes:
+  mysql-data:
+
+networks:
+  shortlink-network:
+    driver: bridge

@@ -1,0 +1,14 @@
+/app/vendor/
+/app/composer.lock
+
+/app/runtime/
+
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+
+*.log
+*.tmp
+
+desktop.ini
