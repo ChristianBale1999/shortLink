@@ -22,6 +22,8 @@ services:
       - ./app:/var/www/html
     env_file:
       - .env
+    depends_on:
+      - mysql
     networks:
       - shortlink-network
 
@@ -31,10 +33,10 @@ services:
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
-      MYSQL_DATABASE: ${DB_NAME:-shortlink_db}
-      MYSQL_USER: ${DB_USER:-shortlink_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-shortlink_password}
+      MYSQL_ROOT_PASSWORD: DB_ROOT_PASSWORD
+      MYSQL_DATABASE: DB_NAME
+      MYSQL_USER: DB_USER
+      MYSQL_PASSWORD: DB_PASSWORD
     ports:
       - "3306:3306"
     volumes:
@@ -42,6 +44,23 @@ services:
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - shortlink-network
+
+  migrate:
+    image: composer:latest
+    container_name: shortlink_migrate
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    command: >
+      sh -c "
+        composer install --no-interaction &&
+        php yii migrate/up --interactive=0
+      "
+    depends_on:
+      - mysql
+    networks:
+      - shortlink-network
+    restart: "no"
 
 volumes:
   mysql-data:

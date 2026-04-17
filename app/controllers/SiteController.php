@@ -46,7 +46,6 @@ class SiteController extends Controller
 			}
 		}
 
-		// Проверка доступности через Guzzle
 		try {
 			$response = $this->httpClient->head($url);
 			if ($response->getStatusCode() >= 400) {
