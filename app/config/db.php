@@ -1,8 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 return [
 	'class' => 'yii\db\Connection',
-	'dsn' => 'mysql:host=mysql;dbname=shortlink_db',
-	'username' => 'shortlink_user',
-	'password' => 'shortlink_password',
-	'charset' => 'utf8',
+	'dsn' => 'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
+	'username' => getenv('DB_USER'),
+	'password' => getenv('DB_PASSWORD'),
+	'charset' => 'utf8mb4',
 ];

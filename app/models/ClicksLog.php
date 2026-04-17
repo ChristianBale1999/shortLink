@@ -1,16 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 namespace app\models;
 
 use yii\db\ActiveRecord;
 
 class ClicksLog extends ActiveRecord
 {
-	public static function tableName()
+	public static function tableName(): string
 	{
 		return 'clicks_log';
 	}
 
-	public function rules()
+	public function rules(): array
 	{
 		return [
 			[['link_id', 'ip_address', 'clicked_at'], 'required'],

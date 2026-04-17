@@ -4,25 +4,29 @@ FROM php:8.5-fpm
 RUN sed -i 's/deb.debian.org/mirror.yandex.ru/g' /etc/apt/sources.list.d/debian.sources 2>/dev/null || \
     sed -i 's/deb.debian.org/mirror.yandex.ru/g' /etc/apt/sources.list
 
-# Обновление и установка пакетов с увеличенным таймаутом
-RUN apt-get update -o Acquire::Check-Valid-Until=false \
-    && apt-get install -y --no-install-recommends \
+# Установка системных зависимостей
+RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     libzip-dev \
     zip \
     unzip \
-    libonig-dev \
-    && apt-get clean \
+    libcurl4-openssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка PHP расширений
 RUN docker-php-ext-install \
     pdo_mysql \
     mbstring \
+    exif \
+    pcntl \
+    bcmath \
     gd \
-    zip
+    zip \
+    curl
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

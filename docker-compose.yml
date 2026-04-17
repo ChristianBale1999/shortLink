@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   nginx:
     image: nginx:alpine
@@ -22,37 +20,26 @@ services:
     container_name: shortlink_php
     volumes:
       - ./app:/var/www/html
-    depends_on:
-      - mysql
+    env_file:
+      - .env
     networks:
       - shortlink-network
 
   mysql:
-    image: mariadb:10.6
+    image: mariadb:10.11
     container_name: shortlink_mysql
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: shortlink_db
-      MYSQL_USER: shortlink_user
-      MYSQL_PASSWORD: shortlink_password
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-shortlink_db}
+      MYSQL_USER: ${DB_USER:-shortlink_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-shortlink_password}
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - shortlink-network
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: shortlink_phpmyadmin
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-    ports:
-      - "8080:80"
-    depends_on:
-      - mysql
     networks:
       - shortlink-network
 

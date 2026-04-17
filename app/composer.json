@@ -3,21 +3,38 @@
   "description": "Short link service with QR codes",
   "type": "project",
   "require": {
-    "php": ">=8.5",
+    "php": ">=8.4",
     "yiisoft/yii2": "~2.0.54",
     "yiisoft/yii2-bootstrap4": "~2.0.10",
-    "endroid/qr-code": "^5.0",
+    "guzzlehttp/guzzle": "^7.0",
+    "endroid/qr-code": "^4.0",
     "ext-gd": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "~2.1.0",
-    "yiisoft/yii2-gii": "~2.2.0"
+    "yiisoft/yii2-debug": "~2.1.22",
+    "yiisoft/yii2-gii": "~2.2.5",
+    "npm-asset/jquery": "^3.6",
+    "npm-asset/bootstrap": "^4.6"
   },
   "config": {
     "process-timeout": 1800,
     "allow-plugins": {
       "yiisoft/yii2-composer": true
     }
-  }
+  },
+  "repositories": [
+    {
+      "name": "asset-packagist",
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    },
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ]
 }
